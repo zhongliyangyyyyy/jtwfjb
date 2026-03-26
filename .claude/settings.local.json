@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/zhongliyang/project/jtwfjb/*.mp4)",
+      "Bash(ffmpeg -version)",
+      "Bash(pip install:*)",
+      "Bash(timeout 10 uvicorn app.main:app --host 0.0.0.0 --port 8000)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(/opt/homebrew/opt/python@3.9/bin/python3.9 -m pip install sqlalchemy aiosqlite greenlet)",
+      "Bash(/opt/homebrew/opt/python@3.9/bin/python3.9 -m pip install weasyprint --upgrade)"
+    ]
+  }
+}
