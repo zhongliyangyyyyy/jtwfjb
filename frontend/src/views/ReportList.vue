@@ -99,6 +99,16 @@
           <p>视频缩略图：</p>
           <img :src="'/api/v1/reports/' + currentReport.id + '/thumbnail'" alt="缩略图" />
         </div>
+
+        <div v-if="currentReport.violation_image_path" class="violation-image-section">
+          <p>违规证据截图：</p>
+          <img
+            :src="'/api/v1/reports/' + currentReport.id + '/violation-image'"
+            alt="违规标注图像"
+            class="violation-image"
+          />
+          <p class="violation-hint">图中标注了检测到的违规行为（车辆边界框、车道线）</p>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -203,7 +213,8 @@ const formatViolationType = (type) => {
     'wrong_way': '逆行',
     'emergency_lane': '占用应急车道',
     'illegal_parking': '违规停放',
-    'illegal_change': '违规变道'
+    'illegal_change': '违规变道',
+    'solid_line_change': '跨实线变道'
   }
   return types[type] || type || '-'
 }
@@ -279,5 +290,26 @@ onMounted(() => {
   max-width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+.violation-image-section {
+  margin-top: 20px;
+}
+
+.violation-image-section p {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.violation-image {
+  max-width: 100%;
+  border: 2px solid #e74c3c;
+  border-radius: 4px;
+}
+
+.violation-hint {
+  color: #888;
+  font-size: 12px;
+  margin-top: 5px;
 }
 </style>

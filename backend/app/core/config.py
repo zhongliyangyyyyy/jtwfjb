@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     FRAMES_DIR: Path = BASE_DIR / "data" / "frames"
     THUMBNAILS_DIR: Path = BASE_DIR / "data" / "thumbnails"
     REPORTS_DIR: Path = BASE_DIR / "data" / "reports"
+    VIOLATIONS_DIR: Path = BASE_DIR / "data" / "violations"
 
     # API配置
     API_V1_PREFIX: str = "/api/v1"
@@ -37,5 +38,6 @@ settings = Settings()
 
 # 确保目录存在
 for dir_path in [settings.UPLOAD_DIR, settings.DATA_DIR, settings.CLIPS_DIR,
-                 settings.FRAMES_DIR, settings.THUMBNAILS_DIR, settings.REPORTS_DIR]:
+                 settings.FRAMES_DIR, settings.THUMBNAILS_DIR, settings.REPORTS_DIR,
+                 settings.VIOLATIONS_DIR]:
     dir_path.mkdir(parents=True, exist_ok=True)

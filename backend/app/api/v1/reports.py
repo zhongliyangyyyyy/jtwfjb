@@ -98,6 +98,7 @@ async def analyze_report(
         report.violation_type = detection_result.get("violation_type")
         report.violation_time = detection_result.get("violation_time")
         report.detection_data = detection_result.get("detection_data")
+        report.violation_image_path = detection_result.get("violation_image_path")
 
         # 提取违法片段
         if detection_result.get("violation_start_time"):
@@ -183,6 +184,25 @@ async def get_video_clip(report_id: str, db: AsyncSession = Depends(get_db)):
     )
 
 
+@router.get("/{report_id}/violation-image")
+async def get_violation_image(report_id: str, db: AsyncSession = Depends(get_db)):
+    """获取违规标注图像"""
+    result = await db.execute(select(Report).where(Report.id == report_id))
+    report = result.scalar_one_or_none()
+
+    if not report:
+        raise HTTPException(status_code=404, detail="举报记录不存在")
+
+    if not report.violation_image_path or not os.path.exists(report.violation_image_path):
+        raise HTTPException(status_code=404, detail="违规标注图像不存在")
+
+    return FileResponse(
+        report.violation_image_path,
+        media_type="image/jpeg",
+        filename=f"违规标注_{report.license_plate or report_id}.jpg"
+    )
+
+
 @router.delete("/{report_id}")
 async def delete_report(report_id: str, db: AsyncSession = Depends(get_db)):
     """删除举报记录"""
@@ -193,7 +213,7 @@ async def delete_report(report_id: str, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=404, detail="举报记录不存在")
 
     # 删除文件
-    for path_attr in ["video_path", "thumbnail_path", "clip_path"]:
+    for path_attr in ["video_path", "thumbnail_path", "clip_path", "violation_image_path"]:
         file_path = getattr(report, path_attr)
         if file_path and os.path.exists(file_path):
             os.remove(file_path)

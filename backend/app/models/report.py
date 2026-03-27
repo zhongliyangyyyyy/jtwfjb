@@ -35,6 +35,9 @@ class Report(Base):
     clip_start_time = Column(Float, nullable=True)
     clip_end_time = Column(Float, nullable=True)
 
+    # 违规标注图片
+    violation_image_path = Column(String(500), nullable=True)
+
     # 检测结果详情 (JSON格式存储)
     detection_data = Column(JSON, nullable=True)
 
@@ -64,6 +67,7 @@ class Report(Base):
             "clip_path": self.clip_path,
             "clip_start_time": self.clip_start_time,
             "clip_end_time": self.clip_end_time,
+            "violation_image_path": self.violation_image_path,
             "status": self.status,
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
